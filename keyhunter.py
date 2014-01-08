@@ -59,29 +59,27 @@ def EncodeBase58Check(secret):
 
 ########## end code from pywallet.py ############
 
-# read through target file
-# one block at a time
+# read through target file one block at a time
 while True:
     data = f.read(readlength)
     if not data:
         break
 
-  # look in this block for keys
-    x = 0
+    # look in this block for keys
+    pos = 0
     while True:
         # find the magic number
-        pos = data.find(magic,x)
+        pos = data.find(magic, pos)
         if pos == -1:
             break
         print EncodeBase58Check('\x80' + data[pos+magiclen:pos+magiclen+32])
-        x += (pos + 1)
+        pos += 1
 
-  # are we at the end of the file?
-    if len(data) < readlength:
-        break
+    # are we at the end of the file?
+    if len(data) == readlength:
+        # make sure we didn't miss any keys at the end of the block
+        f.seek(f.tell() - (32 + magiclen))
 
-  # make sure we didn't miss any keys at the end of the block
-    f.seek(f.tell() - (32 + magiclen))
 
 # code grabbed from pywallet.py
 
