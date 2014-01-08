@@ -13,6 +13,7 @@ magiclen = len(magic)
 
 
 ##### start code from pywallet.py #############
+
 __b58chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 __b58base = len(__b58chars)
 
@@ -48,7 +49,6 @@ def EncodeBase58Check(secret):
     hash = Hash(secret)
     return b58encode(secret + hash[0:4])
 
-
 ########## end code from pywallet.py ############
 
 def main():
@@ -79,10 +79,6 @@ def main():
             if len(data) == readlength:
                 # make sure we didn't miss any keys at the end of the block
                 f.seek(f.tell() - (32 + magiclen))
-
-
-# code grabbed from pywallet.py
-
 
 if __name__ == "__main__":
     main()
