@@ -43,8 +43,9 @@ def b58encode(v):
     # leading 0-bytes in the input become leading-1s
     nPad = 0
     for c in v:
-        if c == '\0': nPad += 1
-        else: break
+        if c != '\0': 
+            break
+        nPad += 1
 
   return (__b58chars[0]*nPad) + result
 
@@ -66,22 +67,21 @@ while True:
         break
 
   # look in this block for keys
-    x=0
+    x = 0
     while True:
         # find the magic number
-        pos=data.find(magic,x)
-        #pos=data.find('\13\02\01\01\04\20',0)
-        if pos==-1:
+        pos = data.find(magic,x)
+        if pos == -1:
             break
-        print EncodeBase58Check('\x80'+data[pos+magiclen:pos+magiclen+32])
-        x+=(pos+1)
+        print EncodeBase58Check('\x80' + data[pos+magiclen:pos+magiclen+32])
+        x += (pos + 1)
 
   # are we at the end of the file?
     if len(data) < readlength:
         break
 
   # make sure we didn't miss any keys at the end of the block
-    f.seek(f.tell()-(32+magiclen))
+    f.seek(f.tell() - (32 + magiclen))
 
 # code grabbed from pywallet.py
 
