@@ -14,7 +14,7 @@ if len(sys.argv)!=2:
 
 filename = sys.argv[1]
 
-f = open(filename)
+f = open(filename, "rb")
 magic = '\x01\x30\x82\x01\x13\x02\x01\x01\x04\x20'
 magiclen = len(magic)
 
