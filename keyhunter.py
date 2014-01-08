@@ -51,13 +51,8 @@ def EncodeBase58Check(secret):
 
 ########## end code from pywallet.py ############
 
-def main():
-    if len(sys.argv) != 2:
-        print "./{0} <filename>".format(sys.argv[0])
-        exit()
-
-    filename = sys.argv[1]
-
+def find_keys(filename):
+    keys = set()
     with open(filename, "rb") as f:
         # read through target file one block at a time
         while True:
@@ -74,13 +69,23 @@ def main():
                     break
                 key_offset = pos + magiclen
                 key_data = "\x80" + data[key_offset:key_offset + 32]
-                print EncodeBase58Check(key_data)
+                keys.add(EncodeBase58Check(key_data))
                 pos += 1
 
             # are we at the end of the file?
             if len(data) == readlength:
                 # make sure we didn't miss any keys at the end of the block
                 f.seek(f.tell() - (32 + magiclen))
+    return keys
+
+def main():
+    if len(sys.argv) != 2:
+        print "./{0} <filename>".format(sys.argv[0])
+        exit()
+
+    keys = find_keys(sys.argv[1])
+    for key in keys:
+        print key
 
 if __name__ == "__main__":
     main()
