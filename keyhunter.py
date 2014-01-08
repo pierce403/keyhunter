@@ -72,7 +72,9 @@ def main():
                 pos = data.find(magic, pos)
                 if pos == -1:
                     break
-                print EncodeBase58Check('\x80' + data[pos+magiclen:pos+magiclen+32])
+                key_offset = pos + magiclen
+                key_data = "\x80" + data[key_offset:key_offset + 32]
+                print EncodeBase58Check(key_data)
                 pos += 1
 
             # are we at the end of the file?
